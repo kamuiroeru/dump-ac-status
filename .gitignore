@@ -9,3 +9,7 @@ temp
 
 # credentials
 credentials/*.cred
+
+# 出力ログ
+logs/*
+!logs/.gitkeep

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $(dirname $0)  # このスクリプトのディレクトリに移動
+
 # python の 仮想環境を作り、selenium と chrome-driver をインストール する
 
 ## 仮想環境を作る

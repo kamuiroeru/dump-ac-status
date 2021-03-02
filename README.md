@@ -6,6 +6,13 @@
 
 ## Install
 
+Install dependencies.
 ```shell
 $ ./install.sh
+```
+
+Add credentials
+```shell
+$ source .venv/bin/activate
+$ python credentials/create_cred.py sega
 ```

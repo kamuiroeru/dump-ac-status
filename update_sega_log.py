@@ -17,12 +17,18 @@ from urllib.request import Request, urlopen
 from itertools import product
 from collections import defaultdict
 
+# Logging 設定
+# 参考: https://qiita.com/FukuharaYohei/items/92795107032c8c0bfd19
+from logging import getLogger, config
+config.dictConfig(json.load(open(pjoin(SCRIPT_DIR, 'print_config.json'))))
+logger = getLogger(__name__)
+
 
 def maimai(driver: WebDriver) -> int:
     """maimai のプレイ回数を取得"""
 
     # maimai NET にログイン
-    print('login now ...')
+    logger.info('login now ...')
     driver.get('https://maimaidx.jp/maimai-mobile/')
     id_elem: WebElement = driver.find_element_by_name('segaId')
     id_elem.clear()
@@ -33,7 +39,7 @@ def maimai(driver: WebDriver) -> int:
     id_elem.submit()
 
     # プレイヤーデータページへ遷移
-    print('get play count ...')
+    logger.info('get play count ...')
     driver.find_element_by_name('idx').submit()
     driver.get('https://maimaidx.jp/maimai-mobile/playerData/')
 
@@ -48,7 +54,7 @@ def ongeki(driver: WebDriver) -> int:
     """オンゲキ のプレイ回数を取得"""
 
     # オンゲキ NET にログイン
-    print('login now ...')
+    logger.info('login now ...')
     driver.get('https://ongeki-net.com/ongeki-mobile/')
     id_elem: WebElement = driver.find_element_by_name('segaId')
     id_elem.clear()
@@ -59,7 +65,7 @@ def ongeki(driver: WebDriver) -> int:
     id_elem.submit()
 
     # プレイヤーデータページへ遷移
-    print('get play count ...')
+    logger.info('get play count ...')
     driver.find_element_by_name('idx').submit()
     driver.get('https://ongeki-net.com/ongeki-mobile/home/playerDataDetail/')
 
@@ -148,7 +154,7 @@ def notify():
         )
         with urlopen(req) as res:
             body = res.read()
-            print(body)
+            logger.info(body)
 
 
 if __name__ == '__main__':
@@ -157,9 +163,9 @@ if __name__ == '__main__':
     options.add_argument('--headless')
     driver = webdriver.Chrome(options=options)
 
-    print('get maimai count ...')
+    logger.info('get maimai count ...')
     maimai_count = maimai(driver)
-    print('get ongeki count ...')
+    logger.info('get ongeki count ...')
     ongeki_count = ongeki(driver)
     driver.quit()
     now_string = datetime.now().isoformat()
